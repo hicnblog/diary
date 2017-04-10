@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(//fonts.gstatic.com/s/materialicons/v21/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+}
+
+button#on_button_submit {
+    font-family: "Lato", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    box-shadow: none;
+    background-color: rgb(98, 99, 103);
+    color: #bdbdbd;
+    border: 1px solid white;
+    letter-spacing: 0;
+    line-height: inherit;
+}
+
+div.ql-container.ql-bubble {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-size: 19px;
+}
+
+span#on_title_story {
+    font-size: 19px;
+}
+
+#diary_on_show,
+#form-container{
+    display: none;
+}
+
+form#diary_ku .ql-editor {
+    padding-left: 2px;
+    padding-right: 2px;
+}

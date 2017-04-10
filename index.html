@@ -1,15 +1,64 @@
 <!DOCTYPE html>
-  <html>
-    <head>
-      <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link type="text/css" rel="stylesheet" href="inc/materialize-css/css/materialize.min.css"  media="screen,projection"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
+<html>
 
-    <body>
-        <h3>Hello word</h3>
-      <script type="text/javascript" src="inc/jquery.min.js"></script>
-      <script type="text/javascript" src="inc/materialize-css/js/materialize.min.js"></script>
-      <script type="text/javascript" src="index.js"></script>
-    </body>
-  </html>
+<head>
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="inc/materialize-css/css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="inc/quill/quill.bubble.css" />
+    <link type="text/css" rel="stylesheet" href="light.css"/>
+    <link type="text/css" rel="stylesheet" href="index.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <main role="main">
+        <div class="grid grid-centered">
+            <div class="grid-cell">
+                    <div class="container-diary">
+                    <article id="story_editor">
+                        <p id="diary_on_show"></p>
+                        <div id="form-container" class="row">
+                            <form class="col s12" id="diary_ku">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <span id="on_title_story">Diary</span>
+                                        <div id="editor" name="editor"></div>
+                                    </div>
+                                </div>
+                                <div class="row" id="on_content_button">
+                                    <div class="input-field col s12">
+                                        <button class="btn waves-effect darken" id="on_button_submit" type="submit" name="action">Publish</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row" id="display_diary">
+                            <div class="col s12">
+                                <div class="content_diary" id="display_content_diary">
+
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="//www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
+    <script type="text/javascript" src="inc/jquery.min.js"></script>
+    <script type="text/javascript" src="inc/materialize-css/js/materialize.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script>
+        WebFont.load({
+        google: {
+            families: ['Cormorant Garamond:700', 'Lato:300,400,700']
+        }
+        });
+    </script>
+    <script type="text/javascript" src="inc/quill/quill.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
