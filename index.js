@@ -1,10 +1,8 @@
 (function($) {
     'use strict';
 
-    var clone_display_diary = $("#display_diary").clone();
-    var clone_content_empty = $('#form-container').clone();
+    var cl_attr_button = $('.btn.waves-effect.darken').closest('div').clone();
 
-    $('#display_diary').remove();
     // guid
     function guid() {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
@@ -69,12 +67,16 @@
     }
 
     function init_diary(){
+        if(is_on_ajax() === 0){
+            $('#form-container').show();
+        }
         var guid_get = guid(),
+        Keyboard = Quill.import("modules/keyboard"),
         quill = new Quill('#editor', {
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
-                    ['link', 'blockquote', 'code-block', 'image'],
+                    ['link', 'blockquote', 'image'],
                     [{
                         list: 'ordered'
                     }, {
@@ -83,6 +85,30 @@
                 ]
             },
             placeholder: 'Tulis ceritamu disini...',
+            theme: 'bubble'
+        }),
+        quill_title = new Quill('#editor_title', {
+            modules: {
+                toolbar : false,
+                keyboard: {
+                    bindings: {
+                        tab: false,
+                        handleEnter: {
+                            key: 13,
+                            handler: function() {}
+                        },
+                        "required enter": {
+                            key: Keyboard.keys.ENTER,
+                            collapsed: !0,
+                            shiftKey: null,
+                            suffix: /^$/,
+                            handler: function(t, e) {
+                            }
+                        },
+                    }
+                }
+            },
+            placeholder: 'Tulis judul ceritamu disini...',
             theme: 'bubble'
         }),
         config = {
@@ -96,19 +122,28 @@
         firebase.initializeApp(config);
 
         var ref = firebase.database().ref();
+        var btn_sec = 'on_button_submit_'+guid_get;
+        var conv_to_id_btn_sec = '#'+btn_sec;
+        $('.btn.waves-effect.darken').attr('id', btn_sec);
 
         // on submit
-        $('#diary_ku').submit(function(event) {
+        $(conv_to_id_btn_sec).click(function() {
             var lengthContentQuill = quill.getLength();
-            console.log(lengthContentQuill);
-            if(lengthContentQuill > 4) {
-                $('#on_button_submit').addClass("disabled");
+            var lengthofTitle = quill_title.getLength();
+            if(lengthContentQuill > 4 && lengthofTitle > 4) {
+                $('.btn.waves-effect.darken').addClass("disabled");
+                $('.btn.waves-effect.darken').removeAttr('id');
+                var attr_button = $('.btn.waves-effect.darken').closest('div');
+                attr_button.remove();
+                $('#on_content_button').hide();
+
                 $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
                     ref.child("diary").child(guid_get).set({
                         local_date: d_loc,
                         local_time: t_loc,
                         date: $.now(),
                         content: quill.getContents(),
+                        title: quill_title.getContents(),
                         ip: data.ip,
                         long: data.longitude,
                         lat: data.latitude,
@@ -130,78 +165,83 @@
                             var u = this.url;
                             var get_guid = getUrlParameter('guid', u);
                             if (typeof get_guid != 'undefined') {
-                                $('#form-container').remove();
                                 ref.child("diary").child(get_guid).on('value', function(snapshot) {
                                     if (snapshot.val() !== null) {
-                                        $('article#story_editor').append(clone_display_diary);
-                                        var quill_display_diary = new Quill('#display_diary', {
-                                            modules: {
-                                                toolbar: false
-                                            },
-                                            readOnly: true,
-                                            theme: 'bubble'
-                                        });
-                                        quill_display_diary.updateContents(snapshot.val().content);
-                                        quill_display_diary.insertText(0, snapshot.val().local_date+' - '+snapshot.val().local_time+'\n\n', {
-                                            'bold': true
+                                        quill.insertText(0, snapshot.val().local_date+' - '+snapshot.val().local_time+'\n\n', {
+                                        'bold': true
                                         });
                                         window.history.replaceState(null, null, window.location.pathname + "?guid=" + get_guid);
-                                    } else {}
+                                        quill.enable(false);
+                                        quill_title.enable(false); 
+                                        $('#form-container').show();
+                                    } else {
+                                        $('#form-container').hide();
+                                    }
                                 });
                             }
+                            
                         }
 
                     }); // eof ajax
 
-                    if ($.active !== 0) {
-                        $('#form-container').hide();
-                    }
                 },1500); //eof timeout
             }
-            if(lengthContentQuill <= 1) {
-                diary_toast_alert('Loh kok masih kosongan -_-', 2000, 'rounded');
+            if(lengthContentQuill <= 1 && lengthofTitle <= 1) {
+                diary_toast_alert('Loh kok masih kosongan semua -_-', 1500, 'rounded');
             }
-            if(lengthContentQuill <= 4 && lengthContentQuill >= 2){
-                diary_toast_alert('Upss ceritamu terlalu pendek kawan ... ^-^', 2000, 'rounded')
+            if((lengthContentQuill <= 4 && lengthContentQuill >= 2) && (lengthofTitle <= 4 && lengthofTitle >= 2) ){
+                diary_toast_alert('Upss terlalu pendek kawan ^-^', 1500, 'rounded');
             }
-            event.preventDefault();
+            if(lengthContentQuill <= 1 && lengthofTitle > 4) {
+                diary_toast_alert('Ceritanya kok masih kosong', 1500, 'rounded');
+            }
+            if((lengthContentQuill <= 4 && lengthContentQuill >= 2) && lengthofTitle > 4){
+                diary_toast_alert('Ceritamu terlalu pendek kawan', 1500, 'rounded');
+            }
+            if(lengthContentQuill > 4 && lengthofTitle <= 1) {
+                diary_toast_alert('Judulnya kok belum ada', 1500, 'rounded');
+            }
+            if((lengthofTitle <= 4 && lengthofTitle >= 2) && lengthContentQuill > 4){
+                diary_toast_alert('Judulnya terlalu pendek', 1500, 'rounded');
+            }
+            if((lengthofTitle <= 4 && lengthofTitle >= 2) && lengthContentQuill <= 1){
+                diary_toast_alert('Judul kependekan dan cerita masih kosong', 1500, 'rounded');
+            }
+            if((lengthContentQuill <= 4 && lengthContentQuill >= 2) && lengthofTitle <= 1){
+                diary_toast_alert('Cerita kependekan dan judul masih kosong', 1500, 'rounded');
+            }
         })
         // eof on submit
-
-        if(is_on_ajax() === 0){
-            $('#form-container').show();
-            console.log(is_on_ajax());
-        }
 
         // display from hardcode url
         var get_guid_hard = getUrlParameterOnUse('guid');
         if (typeof get_guid_hard != 'undefined') {
-            $('#form-container').remove();
+            $('#form-container').hide();
             ref.child("diary").child(get_guid_hard).on('value', function(snapshot) {
                 if (snapshot.val() !== null) {
-                    $('article#story_editor').append(clone_display_diary);
-                    var quill_display_diary = new Quill('#display_diary', {
-                        modules: {
-                            toolbar: false
-                        },
-                        readOnly: true,
-                        theme: 'bubble'
-                    });
-                    quill_display_diary.updateContents(snapshot.val().content);
-                    quill_display_diary.insertText(0, snapshot.val().local_date+' - '+snapshot.val().local_time+'\n\n', {
+                    $('.btn.waves-effect.darken').addClass("disabled");
+                    $('.btn.waves-effect.darken').removeAttr('id');
+                    var attr_button = $('.btn.waves-effect.darken').closest('div');
+                    attr_button.remove();
+                    $('#on_content_button').hide();
+                    quill.setContents(snapshot.val().content);
+                    quill.insertText(0, snapshot.val().local_date+' - '+snapshot.val().local_time+'\n\n', {
                         'bold': true
                     });
-                } else {}
+                    quill_title.setContents(snapshot.val().title);
+                    quill.enable(false);
+                    quill_title.enable(false);
+                    $('#form-container').show();
+                } else {
+                    $('#form-container').hide();
+                }
             });
         }
         // eof display from hardcode url
     }
 
-    
-
     $(document).ready(function() {
         Materialize.updateTextFields();
-        console.log('ready to use bro');
         var check_diary_on = $('p#diary_on_show').length;
         if(check_diary_on !== 0){
             init_diary();

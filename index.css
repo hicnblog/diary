@@ -20,7 +20,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-button#on_button_submit {
+button[id^=on_button_submit]{
     font-family: "Lato", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     box-shadow: none;
@@ -31,21 +31,22 @@ button#on_button_submit {
     line-height: inherit;
 }
 
+button[id^=on_button_submit]:hover,
+button[id^=on_button_submit]:focus{
+    box-shadow: none;
+    background-color: rgb(98, 99, 103); 
+}
+
 div.ql-container.ql-bubble {
   font-family: "Lato", Helvetica, Arial, sans-serif;
   font-size: 19px;
 }
 
-span#on_title_story {
-    font-size: 19px;
-}
-
-#diary_on_show,
-#form-container{
-    display: none;
-}
-
-form#diary_ku .ql-editor {
+#diary_ku .ql-editor {
     padding-left: 2px;
     padding-right: 2px;
+}
+
+#form-container {
+    display: none;
 }

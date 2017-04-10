@@ -2,12 +2,26 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Ceritaku | Tulis, Publish dan Share link cerita kamu.</title>
+    <meta name="description" content="Tulis, Publish dan Share link cerita kamu.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="Ceritaku">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="www.bloghicn.ga/diary">
+    <meta property="og:description" content="Tulis, Publish dan Share link cerita kamu.">
+    <meta property="og:site_name" content="Ceritaku">
+    <meta property="og:image" content="www.bloghicn.ga/assets/og-image.jpg">
+
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="inc/materialize-css/css/materialize.min.css" media="screen,projection" />
     <link type="text/css" rel="stylesheet" href="inc/quill/quill.bubble.css" />
     <link type="text/css" rel="stylesheet" href="light.css"/>
     <link type="text/css" rel="stylesheet" href="index.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
 </head>
 
 <body>
@@ -18,25 +32,17 @@
                     <article id="story_editor">
                         <p id="diary_on_show"></p>
                         <div id="form-container" class="row">
-                            <form class="col s12" id="diary_ku">
+                            <div class="col s12" id="diary_ku">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <span id="on_title_story">Diary</span>
+                                        <div id="editor_title" class="c_e_t"></div>
                                         <div id="editor" name="editor"></div>
                                     </div>
                                 </div>
                                 <div class="row" id="on_content_button">
                                     <div class="input-field col s12">
-                                        <button class="btn waves-effect darken" id="on_button_submit" type="submit" name="action">Publish</button>
+                                        <button class="btn waves-effect darken" id="on_button_submit" type="button" name="action">Publish</button>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="row" id="display_diary">
-                            <div class="col s12">
-                                <div class="content_diary" id="display_content_diary">
-
                                 </div>
                             </div>
                         </div>
