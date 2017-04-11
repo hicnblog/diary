@@ -157,7 +157,7 @@
                 $('#on_content_button').hide();
 
                 $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
-                    ref.child("diary").child(result).set({
+                    ref.child("iniceritaku").child(result).set({
                         local_date: d_loc,
                         local_time: t_loc,
                         date: $.now(),
@@ -177,20 +177,20 @@
                         type: 'GET',
                         url: window.location.href,
                         data: {
-                            'diary': localStorage.getItem("permalink")
+                            'ceritaku': localStorage.getItem("permalink")
                         },
                         success: function(msg) {
                         },
                         complete: function(event, xhr, settings) {
                             var u = this.url,
-                            get_permalink = getUrlParameter('diary', u);
+                            get_permalink = getUrlParameter('ceritaku', u);
                             if (typeof get_permalink != 'undefined') {
-                                ref.child("diary").child(get_permalink).on('value', function(snapshot) {
+                                ref.child("iniceritaku").child(get_permalink).on('value', function(snapshot) {
                                     if (snapshot.val() !== null) {
                                         quill.insertText(0, snapshot.val().local_date+' - '+snapshot.val().local_time+'\n\n', {
                                         'bold': true
                                         });
-                                        window.history.replaceState(null, null, window.location.pathname + "?diary=" + result);
+                                        window.history.replaceState(null, null, window.location.pathname + "?ceritaku=" + result);
                                         quill.enable(false);
                                         quill_title.enable(false); 
                                         $('#form-container').show();
@@ -234,10 +234,10 @@
         // eof on submit
 
         // display from hardcode url
-        var get_permalink_hard = getUrlParameterOnUse('diary');
+        var get_permalink_hard = getUrlParameterOnUse('ceritaku');
         if (typeof get_permalink_hard != 'undefined') {
             $('#form-container').hide();
-            ref.child("diary").child(get_permalink_hard).on('value', function(snapshot) {
+            ref.child("iniceritaku").child(get_permalink_hard).on('value', function(snapshot) {
                 if (snapshot.val() !== null) {
                     $('.btn.waves-effect.darken').addClass("disabled");
                     $('.btn.waves-effect.darken').removeAttr('id');
