@@ -89,12 +89,7 @@
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
-                    ['link', 'blockquote', 'image'],
-                    [{
-                        list: 'ordered'
-                    }, {
-                        list: 'bullet'
-                    }]
+                    ['image']
                 ]
             },
             placeholder: 'Tulis ceritamu disini...',
