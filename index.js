@@ -62,6 +62,117 @@
     };
     // eof GET val
 
+    var _slicedToArray = function() {
+        function t(t, e) {
+            var o = [],
+                l = !0,
+                i = !1,
+                r = void 0;
+            try {
+                for (var a, n = t[Symbol.iterator](); !(l = (a = n.next()).done) && (o.push(a.value), !e || o.length !== e); l = !0);
+            } catch (s) {
+                i = !0, r = s
+            } finally {
+                try {
+                    !l && n["return"] && n["return"]()
+                } finally {
+                    if (i) throw r
+                }
+            }
+            return o
+        }
+        return function(e, o) {
+            if (Array.isArray(e)) return e;
+            if (Symbol.iterator in Object(e)) return t(e, o);
+            throw new TypeError("Invalid attempt to destructure non-iterable instance")
+        }
+    }();
+
+    function getFigureValueByUrl(t) {
+        var e = void 0;
+        var c_u = window.location.href;
+        if ((e = t.match(/^(https?):\/\/(www\.)?youtube\.com\/watch.*v=([a-zA-Z0-9_-]+)/i)) || (e = t.match(/^(https?):\/\/(www\.)?youtu\.be\/([a-zA-Z0-9_-]+)/i))) return {
+            embed: c_u + "/youtube.html?youtube=" + t
+        };
+        return !1
+    }
+
+    function _sanitize(t, e) {
+        var o = document.createElement("a");
+        o.href = t;
+        var l = o.href.slice(0, o.href.indexOf(":"));
+        return e.indexOf(l) > -1
+    }
+
+    function _classCallCheck(t, e) {
+        if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function")
+    }
+
+    function _possibleConstructorReturn(t, e) {
+        if (!t) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        return !e || "object" != typeof e && "function" != typeof e ? t : e
+    }
+
+    function _inherits(t, e) {
+        if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function, not " + typeof e);
+        t.prototype = Object.create(e && e.prototype, {
+            constructor: {
+                value: t,
+                enumerable: !1,
+                writable: !0,
+                configurable: !0
+            }
+        }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(t, e) : t.__proto__ = e)
+    }
+
+    function updateEditableText(t, e) {
+        "undefined" == typeof e, e ? $(".editable_text:not(:has(.editable_input))", t).map(function() {
+            var t = this.innerText,
+                e = document.createElement("textarea");
+            return e.classList.add("editable_input"), e.setAttribute("tabindex", "-1"), e.setAttribute("rows", "1"), e.value = t, t || this.classList.add("empty"), $(this).empty().append(e), autosize(e), e
+        }) : $(".editable_text > .editable_input", t).map(function() {
+            var t = this.value,
+                e = this.parentNode;
+            return $(e).empty().text(t), e
+        })
+    }
+
+    function _resizeIframe(t, e, o) {
+        $("iframe").map(function() {
+            var l = null;
+            try {
+                l = this.contentWindow
+            } catch (i) {}
+            if (l && l == t) {
+                var r = o / e;
+                this.setAttribute("width", "640"), this.setAttribute("height", Math.round(640 * r) + ""), this.parentNode && this.parentNode.classList.contains("iframe_helper") && (this.parentNode.style.paddingTop = 100 * r + "%"), window.quill && quill.updateSelection(Quill.sources.USER)
+            }
+        })
+    }
+
+    var _createClass = function() {
+        function t(t, e) {
+            for (var o = 0; o < e.length; o++) {
+                var l = e[o];
+                l.enumerable = l.enumerable || !1, l.configurable = !0, "value" in l && (l.writable = !0), Object.defineProperty(t, l.key, l)
+            }
+        }
+        return function(e, o, l) {
+            return o && t(e.prototype, o), l && t(e, l), e
+        }
+    }(),
+    _get = function t(e, o, l) {
+        null === e && (e = Function.prototype);
+        var i = Object.getOwnPropertyDescriptor(e, o);
+        if (void 0 === i) {
+            var r = Object.getPrototypeOf(e);
+            return null === r ? void 0 : t(r, o, l)
+        }
+        if ("value" in i) return i.value;
+        var a = i.get;
+        if (void 0 !== a) return a.call(l)
+    };
+
     // Configure date and time
     var loc_d = new Date();
     var opt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -80,18 +191,165 @@
     }
 
     function init_diary(){
+        
         if(is_on_ajax() === 0){
             $('#form-container').show();
         }
         var guid_get = guid(),
-        Keyboard = Quill.import("modules/keyboard"),
-        quill = new Quill('#editor', {
+        BlockEmbed = Quill.import("blots/block/embed"),
+        Parchment = Quill.import("parchment"),
+        Delta = Quill.import("delta"),
+        Keyboard = Quill.import("modules/keyboard");
+
+        var FigureBlot = function(t) {
+        function e(t, o) {
+                _classCallCheck(this, e);
+                var l = _possibleConstructorReturn(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t));
+                l.domWrapper = document.createElement("div"),
+                l.domWrapper.classList.add("figure_wrapper"),
+                l.domNode.appendChild(l.domWrapper),
+                setTimeout(function() {
+                    updateEditableText(l.domNode)
+                }, 1);
+                var i = !1;
+                return o.embed && l.appendIframeNode(o.embed), l
+            }
+            return _inherits(e, t), _createClass(e, null, [{
+                key: "create",
+                value: function(t) {
+                    var o = _get(e.__proto__ || Object.getPrototypeOf(e), "create", this).call(this, t);
+                    return o.setAttribute("contenteditable", "false"), o
+                }
+            }]), _createClass(e, [{
+                key: "appendIframeNode",
+                value: function(t) {
+                    var e = document.createElement("div"),
+                        o = document.createElement("div"),
+                        l = document.createElement("iframe");
+                    return e.classList.add("iframe_wrap"), 
+                    e.appendChild(o), 
+                    o.classList.add("iframe_helper"), 
+                    o.classList.add("video-container"),
+                    o.style.paddingTop = "0", 
+                    o.appendChild(l), 
+                    l.setAttribute("src", this.sanitize(t)), 
+                    l.setAttribute("width", "558"), 
+                    l.setAttribute("height", "498"), 
+                    l.setAttribute("frameborder", "0"), 
+                    l.setAttribute("allowtransparency", "true"), 
+                    l.setAttribute("allowfullscreen", "true"), 
+                    l.setAttribute("scrolling", "no"), 
+                    this.domWrapper.appendChild(e), 
+                    e
+                }
+            }, {
+                key: "sanitize",
+                value: function(t) {
+                    return _sanitize(t, ["http", "https", "data"]) ? t : "//:0"
+                }
+            }, {
+                key: "_index",
+                value: function(t, e) {
+                    if (t === this.domCaption) return 0;
+                    var o = 0;
+                    return t.nodeType == t.TEXT_NODE && (o += e >= 0 ? e : t.data.length), t.previousSibling ? o + this._index(t.previousSibling, -1) : t.parentNode ? o + this._index(t.parentNode, -1) : 0
+                }
+            }, {
+                key: "_position",
+                value: function(t, e) {
+                    if (t.nodeType == t.TEXT_NODE) return e <= t.data.length ? [t, e] : (e -= t.data.length, [null, e]);
+                    for (var o = t.firstChild; o;) {
+                        var l = null,
+                            i = this._position(o, e),
+                            r = _slicedToArray(i, 2);
+                        if (l = r[0], e = r[1], l) return [l, e];
+                        o = o.nextSibling
+                    }
+                    return [t, e]
+                }
+            }, {
+                key: "index",
+                value: function(t, e) {
+                    return 0
+                }
+            }, {
+                key: "position",
+                value: function(t, e) {
+                    return [this.domCursor, 0]
+                }
+            }], [{
+                key: "value",
+                value: function o(t) {
+                    var o = {},
+                    e = t.querySelector("img");
+                    e && (o.image = e.src);
+                    var l = t.querySelector("video");
+                    l && (o.video = l.src);
+                    var i = t.querySelector("iframe");
+                    i && (o.embed = i.src);
+                    return o
+                }
+            }]), e
+        }(BlockEmbed);
+FigureBlot.blotName = "blockFigure", FigureBlot.tagName = "div", Quill.register(FigureBlot);
+        
+        var quill = new Quill('#editor', {
             modules: {
                 toolbar: [
                     ['bold', 'italic', 'underline'],
                     ['image']
-                ]
+                ],
+                clipboard: {
+                    matchers: [
+                        ["video", function(t, e) {
+                            return t.src && _sanitize(t.src, ["http", "https", "data"]) ? (new Delta).insert({
+                                blockFigure: {
+                                    video: t.src
+                                }
+                            }) : new Delta
+                        }],
+                        ["br", function(t, e) {
+                            return t.classList.contains("inline") ? (new Delta).insert({
+                                textBreak: !0
+                            }) : e
+                        }]
+                    ]
+                },
+                keyboard: {
+                    bindings: {
+                        "detect embed": {
+                            key: Keyboard.keys.ENTER,
+                            collapsed: !0,
+                            handler: function(t, e) {
+                                var o = quill.scroll.line(t.index),
+                                l = _slicedToArray(o, 2),
+                                i = l[0],
+                                r = l[1];
+                                if (i) {
+                                    var n = i.domNode.innerText,
+                                        s = n.substr(0, r),
+                                        u = void 0;
+                                    if (u = s.match(/(^|\s)(https?:\/\/\S+)$/)) {
+                                        var c = u[2];
+                                        if(quill.formatText(t.index - c.length, c.length, "link", c, Quill.sources.USER), !s.substr(0, r - c.length).trim().length && "P" == i.domNode.tagName){
+                                            var p = getFigureValueByUrl(c);
+                                            if (p) {
+                                                var h = i.offset(quill.scroll);
+                                                return quill.updateContents((new Delta).retain(h)["delete"](s.length).insert({
+                                                    blockFigure: p
+                                                }), Quill.sources.USER), !1
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                                return !0;
+                            }
+                        },
+                    }
+                }
             },
+            formats: ["bold", "italic", "underline","blockFigure"],
             placeholder: 'Tulis ceritamu disini...',
             theme: 'bubble'
         }),
@@ -112,7 +370,7 @@
                             suffix: /^$/,
                             handler: function(t, e) {
                             }
-                        },
+                        }
                     }
                 }
             },
@@ -183,7 +441,7 @@
                                 ref.child("iniceritaku").child(get_permalink).on('value', function(snapshot) {
                                     if (snapshot.val() !== null) {
                                         quill.insertText(0, snapshot.val().local_date+' - '+snapshot.val().local_time+'\n\n', {
-                                        'bold': true
+                                            'bold': true
                                         });
                                         window.history.replaceState(null, null, window.location.pathname + "?ceritaku=" + result);
                                         quill.enable(false);

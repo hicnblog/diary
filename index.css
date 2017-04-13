@@ -50,3 +50,19 @@ div.ql-container.ql-bubble {
 #form-container {
     display: none;
 }
+
+figure {
+    margin: 0 21px 16px;
+    padding: 0;
+    text-align: center;
+    position: relative;
+}
+.figure_wrapper {
+    position: relative;
+}
+.iframe_wrap {
+    max-width: 100%;
+    vertical-align: top;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.4);
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="MobileOptimized" content="320" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+        html,
+        body,
+        iframe {
+            height: 100%
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function get_iframe(yt_id){
+            var iframe = document.createElement('iframe');
+            var div = document.createElement('div');
+            div.className = "video-container";
+            
+            iframe.width = "558";
+            iframe.height = "498";
+            iframe.src = "//www.youtube.com/embed/"+yt_id+"?showinfo=0";
+            iframe.frameBorder = "0";
+            iframe.allowFullscreen = "true";
+            div.appendChild(iframe);
+
+            return div;
+        }
+        var gyt_u_id = function gyt_u_id(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[2] === undefined ? true : sParameterName[2];
+                }
+            }
+        };
+
+        var _htmlNode = document.getElementsByTagName('html')[0];
+        var _maxHeight = 0;
+
+        if(typeof gyt_u_id('youtube') !== "undefined"){
+            document.getElementsByTagName('body')[0].appendChild(get_iframe(gyt_u_id('youtube')));
+        }
+    </script>
+</body>
+</html>
