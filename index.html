@@ -19,6 +19,7 @@
 <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel=stylesheet>
 <link type=text/css rel=stylesheet href=inc/materialize-css/css/materialize.min.css media=screen,projection />
 <link type=text/css rel=stylesheet href=inc/quill/quill.bubble.css />
+<link type=text/css rel=stylesheet href=inc/intro/introjs.css />
 <link type=text/css rel=stylesheet href="light.css"/>
 <link type=text/css rel=stylesheet href="index.css"/>
 </head>
@@ -33,13 +34,13 @@
 <div class="col s12" id=diary_ku>
 <div class=row>
 <div class="input-field col s12">
-<div id=editor_title class=c_e_t></div>
-<div id=editor name=editor></div>
+<div id=editor_title class=c_e_t data-step="1" data-intro="Kamu bisa menambahkan judul cerita apa yang kamu suka."></div>
+<div id=editor name=editor data-step="2" data-intro="Kamu bisa menambah link youtube dan link gambar disini. Caranya copy paste link youtube/gambar lalu tekan enter."></div>
 </div>
 </div>
 <div class=row id=on_content_button>
 <div class="input-field col s12">
-<button class="btn waves-effect darken" id=on_button_submit type=button name=action>Publish</button>
+<button class="btn waves-effect darken" id=on_button_submit type=button name=action data-step="3" data-intro="Setelah selesai mengisi judul dan cerita kamu, saatnya kamu klik publish. Setelah itu share cerita kamu dengan copy url, seperti : https://www.iniceritaku.ga/?ceritaku=judul-cerita-kamu">Publish</button>
 </div>
 </div>
 </div>
@@ -56,6 +57,7 @@
 <script>WebFont.load({google:{families:["Cormorant Garamond:700","Lato:300,400,700"]}});</script>
 <script type=text/javascript src=inc/quill/quill.js></script>
 <script type=text/javascript src=inc/moment/moment-with-locales.js></script>
+<script type=text/javascript src=inc/intro/intro.js></script>
 <script type=text/javascript src=index.js></script>
 </body>
 </html>
