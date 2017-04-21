@@ -23,6 +23,7 @@
   "homepage": "https://github.com/hicnblog/diary#readme",
   "dependencies": {
     "materialize-css": "^0.98.1",
+    "moment": "^2.18.1",
     "quill": "^1.2.3"
   }
 }
