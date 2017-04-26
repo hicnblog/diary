@@ -13,6 +13,13 @@
         }
     }
 
+    // get all meta
+    function am(num){
+        var j_k = document.getElementsByTagName("meta");
+        var h_s = j_k[num];
+        return h_s;
+    }
+
     function initGuide(){
         if(typeof introJs !== "undefined"){
             var introGuide = introJs();
@@ -573,6 +580,8 @@
                                         quill.enable(false);
                                         quill_title.enable(false); 
                                         document.title = title_text+" | Ceritaku";
+                                        am(6).content = title_text;
+                                        am(8).content = u;
                                         $('#form-container').show();
                                     } else {
                                         $('#form-container').hide();
@@ -633,6 +642,8 @@
                     quill.enable(false);
                     quill_title.enable(false);
                     document.title = quill_title.getText()+" | Ceritaku";
+                    am(6).content = quill_title.getText();
+                    am(8).content = window.location.href;
                     $('#form-container').show();
                 } else {
                     $('#form-container').hide();
