@@ -34,13 +34,16 @@
 <div class="col s12" id=diary_ku>
 <div class=row>
 <div class="input-field col s12">
-<div id=editor_title class=c_e_t data-step="1" data-intro="Kamu bisa menambahkan judul cerita apa yang kamu suka."></div>
-<div id=editor name=editor data-step="2" data-intro="Kamu bisa menambah link youtube dan link gambar disini. Caranya copy paste link youtube/gambar lalu tekan enter."></div>
+<div id=editor_title class=c_e_t data-step=1 data-intro="Kamu bisa menambahkan judul cerita apa yang kamu suka."></div>
+<div id=editor name=editor data-step=2 data-intro="Kamu bisa menambah link youtube dan link gambar disini. Caranya copy paste link youtube/gambar lalu tekan enter."></div>
 </div>
 </div>
 <div class=row id=on_content_button>
 <div class="input-field col s12">
-<button class="btn waves-effect darken" id=on_button_submit type=button name=action data-step="3" data-intro="Setelah selesai mengisi judul dan cerita kamu, saatnya kamu klik publish. Setelah itu share cerita kamu dengan copy url, seperti : https://www.iniceritaku.ga/?ceritaku=judul-cerita-kamu">Publish</button>
+<button class="btn waves-effect darken" id=on_button_submit type=button name=action data-step=3 data-intro="Setelah selesai mengisi judul dan cerita kamu, saatnya kamu klik publish. Setelah itu share cerita kamu dengan copy url, seperti : https://www.iniceritaku.ga/?ceritaku=judul-cerita-kamu">Publish</button>
+<a class="btn-flat btn-small tooltipped" id=help_me data-position=right data-delay=50 data-tooltip="Klik untuk bantuan">
+<i class="small material-icons">live_help</i>
+</a>
 </div>
 </div>
 </div>
@@ -49,6 +52,7 @@
 </div>
 </div>
 </div>
+<div id=modal1 class=modal></div>
 </main>
 <script src=//www.gstatic.com/firebasejs/3.7.5/firebase.js></script>
 <script type=text/javascript src=inc/jquery.min.js></script>
